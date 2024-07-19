@@ -1,35 +1,67 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:news_app_test/core/errors/failures.dart';
+import 'package:news_app_test/core/network/network_info.dart';
 import 'package:news_app_test/core/util/logger.dart';
 import 'package:news_app_test/feature/home/domain/usecase/get_popular_news/get_popular_news.dart';
 import 'package:news_app_test/feature/home/data/model/popular_model/popular_model.dart';
-
 import 'popular_state.dart';
 
 class PopularNewsCubit extends Cubit<PopularNewsState> {
   final GetPopularNews _getPopularNews;
-// final SearchPopularNews? searchPopularNews;
+  final NetworkInfo _networkInfo;
 
   PopularNewsCubit({
     required GetPopularNews getPopularNews,
-    //   this.searchPopularNews,
+    required NetworkInfo networkInfo,
   })  : _getPopularNews = getPopularNews,
+        _networkInfo = networkInfo,
         super(InitialPopularNewsState());
-
-  void loadPopularNewsEvent() {
-    _mapLoadPopularNewsEventToState();
+  final List<PopularNewsResult> _articleList = [];
+  void loadPopularNewsData() async {
+    await _mapLoadPopularNewsEventToState();
+    if (await _networkInfo.isConnected) {
+      _prevStatus = null;
+    } else {
+      emit(OfflineStatus(articleList: _articleList));
+    }
+    listenToNetworkConnection();
   }
 
-  // void changeCategoryPopularNewsEvent(
-  //  // ChangeCategoryPopularNewsEvent event,
-  // ) {
-  //   _mapChangeCategoryPopularNewsEventToState(event);
-  // }
+  InternetStatus? _prevStatus;
+  void listenToNetworkConnection() {
+    _networkInfo.isStreamConnected.listen((InternetStatus status) {
+      if (status == InternetStatus.connected && _prevStatus != null) {
+        emit(OnlineStatus(articleList: _articleList));
+        Fluttertoast.showToast(
+          msg: "Back Online",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          fontSize: 16.0,
+        );
+      }
 
-  void _mapLoadPopularNewsEventToState(
-      // LoadPopularNewsEvent event
-      ) async {
+      if (status == InternetStatus.disconnected) {
+        emit(OfflineStatus(articleList: _articleList));
+        Fluttertoast.showToast(
+          msg: "You're offline",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          fontSize: 16.0,
+        );
+      }
+      _prevStatus = status;
+    });
+  }
+
+  Future<void> _mapLoadPopularNewsEventToState() async {
     emit(LoadingPopularNewsState());
     Logger.logNormal("Before");
     Either<Failure, PopularNewsModel> response = await _getPopularNews();
@@ -43,42 +75,12 @@ class PopularNewsCubit extends Cubit<PopularNewsState> {
         }
         return FailurePopularNewsState(
           errorMessage: failure.toString(),
-        ); //! Error
+        );
       },
-      (data) => LoadedPopularNewsState(articleList: data.results ?? []),
+      (data) {
+        _articleList.addAll(data.results ?? []);
+        return LoadedPopularNewsState(articleList: data.results ?? []);
+      },
     ));
   }
-
-  // void _mapChangeCategoryPopularNewsEventToState(
-  //   ChangeCategoryPopularNewsEvent event,
-  // ) {
-  //   emit(ChangedCategoryPopularNewsState(
-  //       indexCategorySelected: event.indexCategorySelected));
-  // }
-
-  // void searchPopularNewsEvent(SearchPopularNewsEvent event) {
-  //   _mapSearchPopularNewsEventToState(event);
-  // }
-
-  // void _mapSearchPopularNewsEventToState(
-  //     SearchPopularNewsEvent event) async {
-  //   emit(LoadingPopularNewsState());
-  //   var result = await searchPopularNews!(
-  //       ParamsSearchPopularNews(keyword: event.keyword));
-  //   emit(result.fold(
-  //     // ignore: missing_return
-  //     (failure) {
-  //       if (failure is ServerFailure) {
-  //         return FailurePopularNewsState(
-  //             errorMessage: failure.errorMessage);
-  //       } else if (failure is ConnectionFailure) {
-  //         return FailurePopularNewsState(
-  //             errorMessage: failure.errorMessage);
-  //       }
-  //       return FailurePopularNewsState(errorMessage: failure.toString());
-  //     },
-  //     (response) =>
-  //         SearchSuccessPopularNewsState(listArticles: response.results),
-  //   ));
-  // }
 }

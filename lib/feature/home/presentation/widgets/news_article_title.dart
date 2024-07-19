@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:news_app_test/feature/home/data/model/popular_model/popular_model.dart';
-import 'package:news_app_test/feature/home/presentation/screens/article_webview.dart';
+import 'package:news_app_test/feature/home/presentation/screens/article_page.dart';
 import 'package:news_app_test/feature/home/presentation/widgets/read_more_button.dart';
 import 'package:news_app_test/utils/my_theme.dart';
 
@@ -23,12 +23,9 @@ class NewsArticleTile extends StatelessWidget {
               // Left part: Image
               ClipRRect(
                 borderRadius: BorderRadius.circular(6),
-                child: result.media != null &&
-                        result.media!.isNotEmpty &&
-                        result.media!.first.mediaMetadata != null &&
-                        result.media!.first.mediaMetadata!.isNotEmpty
+                child: result.largeImage != null
                     ? CachedNetworkImage(
-                        imageUrl: result.media!.first.mediaMetadata!.first.url!,
+                        imageUrl: result.largeImage!,
                         width: 118,
                         height: 118,
                         fit: BoxFit.cover,
@@ -41,19 +38,17 @@ class NewsArticleTile extends StatelessWidget {
                                   color: Colors.black54, size: 30));
                         },
                         errorWidget: (context, error, stackTrace) {
-                          return Container(
+                          return const SizedBox(
                             width: 118,
                             height: 118,
-                            color: Colors.black12,
-                            child: const Icon(Icons.error_outline, size: 40),
+                            child: Icon(Icons.error_outline, size: 40),
                           );
                         },
                       )
-                    : Container(
+                    : const SizedBox(
                         height: 118,
                         width: 118,
-                        color: Colors.black12,
-                        child: const Icon(Icons.photo, size: 40),
+                        child: Icon(Icons.photo, size: 40),
                       ),
               ),
               const SizedBox(width: 15),
@@ -67,7 +62,7 @@ class NewsArticleTile extends StatelessWidget {
                     // Author and uploading date
                     Text(
                       result.byline != null && result.publishedDate != null
-                          ? "${result.byline!.length > 15 ? result.byline!.substring(0, 15) : result.byline}... ${ DateFormat.yMd().format(result.publishedDate!)}"
+                          ? "${result.byline!.length > 15 ? result.byline!.substring(0, 15) : result.byline}... ${DateFormat.yMd().format(result.publishedDate!)}"
                           : "Source unknown",
                       style: MyTheme.displaySmall,
                     ),
@@ -81,33 +76,20 @@ class NewsArticleTile extends StatelessWidget {
                       style: MyTheme.displayMedium,
                     ),
 
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 10),
 
-                    // Row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        HelperButton(
-                          onTap: () {
-                            if (result.url != null) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ArticleView(
-                                            articleUrl: result.url!,
-                                            articleName: result.byline ??
-                                                "Unknown author",
-                                          )));
-                            }
-                          },
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.favorite_border),
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
+                    if (result.url != null) ...{
+                      HelperButton(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ArticlePage(
+                                        article: result,
+                                      )));
+                        },
+                      ),
+                    }
                   ],
                 ),
               ),

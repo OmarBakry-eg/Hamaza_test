@@ -1,6 +1,5 @@
-
-import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:news_app_test/core/dio/dio_exception.dart';
 import 'package:news_app_test/core/network/network_info.dart';
 import 'package:news_app_test/core/util/dio_logging_interceptor.dart';
 import 'package:news_app_test/core/util/logger.dart';
@@ -13,9 +12,7 @@ class DioClient {
   final Dio _dio = Dio(BaseOptions(
       connectTimeout: const Duration(seconds: 120), // 120 seconds
       receiveTimeout: const Duration(seconds: 120), // 120 seconds
-      headers: {
-        'Accept': "application/json"
-      },
+      headers: {'Accept': "application/json"},
       queryParameters: {
         'api-key': _APIKey.newsAPIKey,
       },
@@ -30,20 +27,22 @@ class DioClient {
 
     if (internetAvailale) {
       try {
-     Response response = await _dio.get(
+        Response response = await _dio.get(
           endPoint,
           queryParameters: queryParameters,
         );
 
         return Result.success(response.data);
-      } on HttpException catch (error) {
-        //  String errorMessage = DioExceptions.fromDioError(error).toString();
+      } on DioException catch (error) {
+        String errorMessage = DioExceptions.fromDioError(error,
+                statusCode: error.response?.statusCode)
+            .message;
 
-        //    Logger.logError("Default err case sc : ${error.uri.?.statusCode}");
+        Logger.logError("Default err case sc : ${error.response?.statusCode}");
         Logger.logError("error $error");
         Logger.logError("error.message ${error.message}");
 
-        return Result.error("errorMessage", error.hashCode);
+        return Result.error(errorMessage, error.response?.statusCode);
       }
     }
     return Result.networkError('No internet connection');

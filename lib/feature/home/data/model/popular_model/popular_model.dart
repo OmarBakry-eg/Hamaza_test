@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+part 'popular_model.g.dart';
 
 class PopularNewsModel extends Equatable {
   final String? status;
@@ -50,34 +52,50 @@ class PopularNewsModel extends Equatable {
   List<Object?> get props => [status, copyright, numResults, results];
 }
 
+@HiveType(typeId: 1)
 class PopularNewsResult extends Equatable {
-  final String? uri;
+  @HiveField(0)
+  final int? articleID;
+  @HiveField(1)
   final String? url;
-  final int? id;
+  @HiveField(2)
+  final DateTime? publishedDate;
+  @HiveField(3)
+  final String? byline;
+  @HiveField(4)
+  final String? title;
+  @HiveField(5)
+  final String? thumbImage;
+  @HiveField(6)
+  final List<String>? desFacet;
+  @HiveField(7)
+  final String? largeImage;
+
+  final List<NewsMedia>? media;
+  final String? uri;
   final int? assetId;
   final Source? source;
-  final DateTime? publishedDate;
   final DateTime? updated;
   final String? section;
   final Subsection? subsection;
   final String? nytdsection;
   final String? adxKeywords;
   final dynamic column;
-  final String? byline;
   final ResultType? type;
-  final String? title;
   final String? resultAbstract;
-  final List<String>? desFacet;
+
   final List<String>? orgFacet;
   final List<String>? perFacet;
   final List<String>? geoFacet;
-  final List<NewsMedia>? media;
+
   final int? etaId;
 
   const PopularNewsResult({
+    this.largeImage,
     this.uri,
+    this.thumbImage,
     this.url,
-    this.id,
+    this.articleID,
     this.assetId,
     this.source,
     this.publishedDate,
@@ -102,7 +120,7 @@ class PopularNewsResult extends Equatable {
   PopularNewsResult copyWith({
     String? uri,
     String? url,
-    int? id,
+    int? articleID,
     int? assetId,
     Source? source,
     DateTime? publishedDate,
@@ -126,7 +144,7 @@ class PopularNewsResult extends Equatable {
       PopularNewsResult(
         uri: uri ?? this.uri,
         url: url ?? this.url,
-        id: id ?? this.id,
+        articleID: articleID ?? this.articleID,
         assetId: assetId ?? this.assetId,
         source: source ?? this.source,
         publishedDate: publishedDate ?? this.publishedDate,
@@ -148,51 +166,62 @@ class PopularNewsResult extends Equatable {
         etaId: etaId ?? this.etaId,
       );
 
-  factory PopularNewsResult.fromJson(Map<String, dynamic> json) => PopularNewsResult(
-        uri: json["uri"],
-        url: json["url"],
-        id: json["id"],
-        assetId: json["asset_id"],
-        source: sourceValues.map[json["source"]],
-        publishedDate: json["published_date"] == null
-            ? null
-            : DateTime.tryParse(
-                json["published_date"],
-              ),
-        updated:
-            json["updated"] == null ? null : DateTime.parse(json["updated"]),
-        section: json["section"],
-        subsection: subsectionValues.map[json["subsection"]],
-        nytdsection: json["nytdsection"],
-        adxKeywords: json["adx_keywords"],
-        column: json["column"],
-        byline: json["byline"],
-        type: resultTypeValues.map[json["type"]],
-        title: json["title"],
-        resultAbstract: json["abstract"],
-        desFacet: json["des_facet"] == null
-            ? []
-            : List<String>.from(json["des_facet"].map((x) => x)),
-        orgFacet: json["org_facet"] == null
-            ? []
-            : List<String>.from(json["org_facet"].map((x) => x)),
-        perFacet: json["per_facet"] == null
-            ? []
-            : List<String>.from(json["per_facet"].map((x) => x)),
-        geoFacet: json["geo_facet"] == null
-            ? []
-            : List<String>.from(json["geo_facet"].map((x) => x)),
-        media: json["media"] == null
-            ? []
-            : List<NewsMedia>.from(
-                json["media"].map((x) => NewsMedia.fromJson(x))),
-        etaId: json["eta_id"],
-      );
+  factory PopularNewsResult.fromJson(Map<String, dynamic> json) {
+    List<NewsMedia>? media = json["media"] == null
+        ? []
+        : List<NewsMedia>.from(json["media"].map((x) => NewsMedia.fromJson(x)));
+    return PopularNewsResult(
+      uri: json["uri"],
+      url: json["url"],
+      articleID: json["id"],
+      assetId: json["asset_id"],
+      source: sourceValues.map[json["source"]],
+      publishedDate: json["published_date"] == null
+          ? null
+          : DateTime.tryParse(
+              json["published_date"],
+            ),
+      updated: json["updated"] == null ? null : DateTime.parse(json["updated"]),
+      section: json["section"],
+      subsection: subsectionValues.map[json["subsection"]],
+      nytdsection: json["nytdsection"],
+      adxKeywords: json["adx_keywords"],
+      column: json["column"],
+      byline: json["byline"],
+      type: resultTypeValues.map[json["type"]],
+      title: json["title"],
+      resultAbstract: json["abstract"],
+      desFacet: json["des_facet"] == null
+          ? []
+          : List<String>.from(json["des_facet"].map((x) => x)),
+      orgFacet: json["org_facet"] == null
+          ? []
+          : List<String>.from(json["org_facet"].map((x) => x)),
+      perFacet: json["per_facet"] == null
+          ? []
+          : List<String>.from(json["per_facet"].map((x) => x)),
+      geoFacet: json["geo_facet"] == null
+          ? []
+          : List<String>.from(json["geo_facet"].map((x) => x)),
+      media: media,
+      thumbImage: media.isNotEmpty &&
+              media.first.mediaMetadata != null &&
+              media.first.mediaMetadata!.isNotEmpty
+          ? media.first.mediaMetadata!.first.url
+          : null,
+      largeImage: media.isNotEmpty &&
+              media.last.mediaMetadata != null &&
+              media.last.mediaMetadata!.isNotEmpty
+          ? media.last.mediaMetadata!.last.url
+          : null,
+      etaId: json["eta_id"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "uri": uri,
         "url": url,
-        "id": id,
+        "id": articleID,
         "asset_id": assetId,
         "source": sourceValues.reverse[source],
         "published_date":
@@ -226,7 +255,7 @@ class PopularNewsResult extends Equatable {
     return [
       uri,
       url,
-      id,
+      articleID,
       assetId,
       source,
       publishedDate,

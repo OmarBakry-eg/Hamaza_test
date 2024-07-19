@@ -3,6 +3,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 abstract class NetworkInfo {
   Future<bool> get isConnected;
   Stream<InternetStatus> get isStreamConnected;
+  Future<InternetStatus> get internetStatus;
 }
 
 class NetworkInfoImpl implements NetworkInfo {
@@ -16,4 +17,7 @@ class NetworkInfoImpl implements NetworkInfo {
   @override
   Stream<InternetStatus> get isStreamConnected =>
       dataConnectionChecker.onStatusChange;
+
+  @override
+  Future<InternetStatus> get internetStatus => dataConnectionChecker.internetStatus;
 }

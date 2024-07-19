@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:news_app_test/core/hive/hive_services.dart';
+import 'package:news_app_test/utils/extensions.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -7,7 +9,9 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const WidgetAppBar(),
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
       body: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(48),
@@ -44,14 +48,16 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ),
                 ValueListenableBuilder(
-                  valueListenable: Hive.box('settings').listenable(),
+                  valueListenable:
+                      Hive.box(HiveBoxes.settings.name).listenable(),
                   builder: (context, box, widget) {
-                    var isDarkMode = box.get('darkMode') ?? false;
+                    bool? isDarkMode = box.get(HiveBoxes.settings.key);
                     return Switch(
-                      value: isDarkMode,
+                      value: isDarkMode ??
+                          context.deviceBrightnessMode == Brightness.dark,
                       onChanged: (value) async {
                         isDarkMode = value;
-                        await box.put('darkMode', isDarkMode);
+                        await box.put(HiveBoxes.settings.key, isDarkMode);
                       },
                     );
                   },
@@ -62,31 +68,5 @@ class SettingsPage extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class WidgetAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const WidgetAppBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: Hive.box('settings').listenable(),
-      builder: (context, box, widget) {
-        var isDarkMode = box.get('darkMode') ?? false;
-        return isDarkMode
-            ? AppBar(
-                title: const Text('Settings'),
-              )
-            : AppBar(
-                title: const Text('Settings'),
-              );
-      },
-    );
-  }
-
-  @override
-  Size get preferredSize {
-    return const Size.fromHeight(kToolbarHeight);
   }
 }
