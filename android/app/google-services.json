@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "527569402059",
+    "project_id": "rare-crew-test",
+    "storage_bucket": "rare-crew-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527569402059:android:ce7a5f3d454109f3fbc34e",
+        "android_client_info": {
+          "package_name": "com.example.news_app_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527569402059-8537dc615mnooestr0r56q3029111kqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7pcQbq-8hs70Ehg6X0UVm7bYx4LhPSgk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527569402059-8537dc615mnooestr0r56q3029111kqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "527569402059-v351qschpd7s8s8g4jcuhlp85nq7m1rm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.rareCrewTest"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527569402059:android:a32174be91695cb4fbc34e",
+        "android_client_info": {
+          "package_name": "com.example.rare_crew_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527569402059-8537dc615mnooestr0r56q3029111kqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7pcQbq-8hs70Ehg6X0UVm7bYx4LhPSgk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527569402059-8537dc615mnooestr0r56q3029111kqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "527569402059-v351qschpd7s8s8g4jcuhlp85nq7m1rm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.rareCrewTest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

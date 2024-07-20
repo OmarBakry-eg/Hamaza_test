@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:news_app_test/core/dio/dio_client.dart';
 import 'package:news_app_test/core/hive/hive_services.dart';
@@ -10,6 +11,8 @@ import 'package:news_app_test/feature/home/domain/usecase/get_popular_news/get_p
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:news_app_test/feature/home/presentation/cubit/popular_cubit.dart';
+
+import 'firebase_options.dart';
 
 final sl = GetIt.instance;
 
@@ -48,7 +51,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DioClient(sl()));
 
   sl.registerLazySingleton(() => InternetConnection());
-  
+
   const FlutterSecureStorage storage = FlutterSecureStorage(
       aOptions: AndroidOptions(
         encryptedSharedPreferences: true,
@@ -61,4 +64,11 @@ Future<void> init() async {
    * ! Hive
    */
   await HiveService.initHive();
+
+  /**
+   * ! Firebase
+   */
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
