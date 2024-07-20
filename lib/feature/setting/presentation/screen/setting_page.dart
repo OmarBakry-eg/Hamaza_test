@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:news_app_test/core/hive/hive_services.dart';
+import 'package:news_app_test/utils/constants.dart';
 import 'package:news_app_test/utils/extensions.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -47,17 +46,15 @@ class SettingsPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                ValueListenableBuilder(
-                  valueListenable:
-                      Hive.box(HiveBoxes.settings.name).listenable(),
-                  builder: (context, box, widget) {
-                    bool? isDarkMode = box.get(HiveBoxes.settings.key);
+                HiveThemeWidget(
+                  builder: (context, box, widget, key) {
+                    bool? isDarkMode = box.get(key);
                     return Switch(
                       value: isDarkMode ??
                           context.deviceBrightnessMode == Brightness.dark,
                       onChanged: (value) async {
                         isDarkMode = value;
-                        await box.put(HiveBoxes.settings.key, isDarkMode);
+                        await box.put(key, isDarkMode);
                       },
                     );
                   },

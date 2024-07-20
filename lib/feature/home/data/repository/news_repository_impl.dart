@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:news_app_test/core/errors/exceptions.dart';
 import 'package:news_app_test/core/errors/failures.dart';
-import 'package:news_app_test/core/hive/hive_services.dart';
 import 'package:news_app_test/core/util/logger.dart';
 import 'package:news_app_test/feature/home/data/datasource/local/news_local_source.dart';
 import 'package:news_app_test/feature/home/data/datasource/remote/news_remote_data_source.dart';
@@ -10,7 +9,7 @@ import 'package:news_app_test/feature/home/domain/repository/news/news_repositor
 
 class PopularNewsRepositoryImpl implements NewsRepository {
   final NewsRemoteDataSource newsRemoteDataSource;
-  final NewsLocalSource newsLocalSource;
+  final PopularNewsLocalSource newsLocalSource;
 
   const PopularNewsRepositoryImpl(
       {required this.newsRemoteDataSource, required this.newsLocalSource});
@@ -19,14 +18,14 @@ class PopularNewsRepositoryImpl implements NewsRepository {
   Future<Either<Failure, PopularNewsModel>> getPopularNews() async {
     try {
       PopularNewsModel newsModel = await newsRemoteDataSource.getPopularNews();
-      newsLocalSource.addItem("cachedNewsKey", newsModel.results);
+      newsLocalSource.addItem(newsModel.results);
       return Right(newsModel);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } on OfflineException catch (e) {
       Logger.logError("resssss");
       List<dynamic>? results =
-          await newsLocalSource.getItem(HiveBoxes.cachedNews.key);
+          await newsLocalSource.getItem();
       Logger.logError("resssss: $results");
       if (results != null && results.isNotEmpty) {
         List<PopularNewsResult> popRes = [];

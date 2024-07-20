@@ -10,36 +10,37 @@ enum HiveBoxes {
 }
 
 abstract class HiveService<T> {
-  final String boxName;
+  final HiveBoxes hiveBox;
 
-  const HiveService(this.boxName);
+  const HiveService(this.hiveBox);
 
   static Future initHive() async {
     await Hive.initFlutter();
     Hive.registerAdapter(PopularNewsResultAdapter());
-    await Hive.openBox(HiveBoxes.settings.name);
-    await Hive.openBox(HiveBoxes.cachedNews.name);
+    for (var e in HiveBoxes.values) {
+      await Hive.openBox(e.name);
+    }
   }
 
   Future<Box> _openBox() async {
-    return Hive.isBoxOpen(boxName)
-        ? Hive.box(boxName)
-        : await Hive.openBox<T>(boxName);
+    return Hive.isBoxOpen(hiveBox.name)
+        ? Hive.box(hiveBox.name)
+        : await Hive.openBox<T>(hiveBox.name);
   }
 
-  Future<void> addItem(String key, T item) async {
+  Future<void> addItem(T item) async {
     final box = await _openBox();
-    await box.put(key, item);
+    await box.put(hiveBox.key, item);
   }
 
-  Future<dynamic> getItem(String key) async {
+  Future<dynamic> getItem() async {
     final box = await _openBox();
-    return box.get(key);
+    return box.get(hiveBox.key);
   }
 
-  Future<void> deleteItem(String key) async {
+  Future<void> deleteItem() async {
     final box = await _openBox();
-    await box.delete(key);
+    await box.delete(hiveBox.key);
   }
 
   Future<void> clearBox() async {

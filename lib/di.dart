@@ -18,10 +18,7 @@ Future<void> init() async {
    */
   // Bloc
   sl.registerFactory(
-    () => PopularNewsCubit(
-      getPopularNews: sl(),
-      networkInfo: sl()
-    ),
+    () => PopularNewsCubit(getPopularNews: sl(), networkInfo: sl()),
   );
 
   // Use Case
@@ -37,7 +34,8 @@ Future<void> init() async {
       () => NewsRemoteDataSourceImpl(sl()));
 
   // Local Data Source
-  sl.registerLazySingleton<NewsLocalSource>(() => NewsLocalSource());
+  sl.registerLazySingleton<PopularNewsLocalSource>(
+      () => PopularNewsLocalSource());
   /**
    * ! Core
    */
