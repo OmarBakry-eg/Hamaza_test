@@ -45,7 +45,7 @@ class ArticleAppBarWidget extends StatelessWidget
             },
             icon: const Icon(CupertinoIcons.share)),
       ],
-      bottom: const PreferredSize(preferredSize: Size(0, 6), child: SizedBox()),
+      bottom: const PreferredSize(preferredSize: Size(0, 6), child: SizedBox.shrink()),
     );
   }
 

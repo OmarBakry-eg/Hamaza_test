@@ -54,6 +54,7 @@ class HomePageState extends State<HomePage> {
                                     .loadPopularNewsData();
                               },
                               child: SingleChildScrollView(
+                                physics: const BouncingScrollPhysics(),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -113,6 +114,7 @@ class HomePageState extends State<HomePage> {
                                         ),
                                         ListView.builder(
                                           shrinkWrap: true,
+                                          padding: EdgeInsets.zero,
                                           physics:
                                               const NeverScrollableScrollPhysics(),
                                           itemCount: state.articleList!.length,

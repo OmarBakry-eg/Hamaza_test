@@ -58,14 +58,10 @@ class ArticlePage extends StatelessWidget {
                                     color: Colors.black54, size: 30));
                           },
                           errorWidget: (context, error, stackTrace) {
-                            return const SizedBox(
-                              child: Icon(Icons.error_outline, size: 40),
-                            );
+                            return const Icon(Icons.error_outline, size: 40);
                           },
                         )
-                      : const SizedBox(
-                          child: Icon(Icons.photo, size: 40),
-                        ),
+                      : const Icon(Icons.photo, size: 40),
                 ),
                 const SizedBox(
                   height: 15,

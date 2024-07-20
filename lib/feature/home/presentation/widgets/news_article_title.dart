@@ -54,8 +54,7 @@ class NewsArticleTile extends StatelessWidget {
               const SizedBox(width: 15),
 
               // Content
-              SizedBox(
-                width: 230,
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
