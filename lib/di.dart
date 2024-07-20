@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:news_app_test/core/dio/dio_client.dart';
 import 'package:news_app_test/core/hive/hive_services.dart';
 import 'package:news_app_test/core/network/network_info.dart';
@@ -47,6 +48,14 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DioClient(sl()));
 
   sl.registerLazySingleton(() => InternetConnection());
+  
+  const FlutterSecureStorage storage = FlutterSecureStorage(
+      aOptions: AndroidOptions(
+        encryptedSharedPreferences: true,
+      ),
+      iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock));
+
+  sl.registerLazySingleton(() => storage);
 
   /**
    * ! Hive
