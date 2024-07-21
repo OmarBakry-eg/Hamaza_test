@@ -32,7 +32,6 @@ class PopularNewsRepositoryImpl implements NewsRepository {
         for (var element in results) {
           popRes.add(element);
         }
-
         PopularNewsModel newsModel = PopularNewsModel(results: popRes);
         return Right(newsModel);
       }

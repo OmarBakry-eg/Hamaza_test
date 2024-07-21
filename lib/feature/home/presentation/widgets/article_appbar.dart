@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:news_app_test/utils/my_theme.dart';
+import 'package:news_app_test/utils/constants.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class ArticleAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -15,26 +14,7 @@ class ArticleAppBarWidget extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const Text(
-            "Hamzah ",
-            style: TextStyle(
-              letterSpacing: -.5,
-              fontSize: 28,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          GradientText("News",
-              style: const TextStyle(
-                letterSpacing: -.5,
-                fontSize: 28,
-                fontWeight: FontWeight.w600,
-              ),
-              colors: MyTheme.gradientColors)
-        ],
-      ),
+      title: const HamzahNewsTitle(),
       centerTitle: true,
       elevation: .1,
       actions: [

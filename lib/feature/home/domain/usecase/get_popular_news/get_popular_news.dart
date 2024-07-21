@@ -6,7 +6,7 @@ import 'package:news_app_test/feature/home/domain/repository/news/news_repositor
 class GetPopularNews {
   final NewsRepository newsRepository;
 
-  GetPopularNews({required this.newsRepository});
+  const GetPopularNews({required this.newsRepository});
 
   Future<Either<Failure, PopularNewsModel>> call() async =>
       await newsRepository.getPopularNews();

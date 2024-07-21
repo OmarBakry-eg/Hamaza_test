@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:news_app_test/core/errors/failures.dart';
 import 'package:news_app_test/core/network/network_info.dart';
 import 'package:news_app_test/core/util/logger.dart';
 import 'package:news_app_test/feature/home/domain/usecase/get_popular_news/get_popular_news.dart';
 import 'package:news_app_test/feature/home/data/model/popular_model/popular_model.dart';
+import 'package:news_app_test/utils/constants.dart' as consts;
 import 'popular_state.dart';
 
 class PopularNewsCubit extends Cubit<PopularNewsState> {
@@ -36,26 +36,12 @@ class PopularNewsCubit extends Cubit<PopularNewsState> {
     _networkInfo.isStreamConnected.listen((InternetStatus status) {
       if (status == InternetStatus.connected && _prevStatus != null) {
         emit(OnlineStatus(articleList: _articleList));
-        Fluttertoast.showToast(
-          msg: "Back Online",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          fontSize: 16.0,
-        );
+        consts.showToast("Back Online", color: Colors.green);
       }
 
       if (status == InternetStatus.disconnected) {
         emit(OfflineStatus(articleList: _articleList));
-        Fluttertoast.showToast(
-          msg: "You're offline",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          fontSize: 16.0,
-        );
+        consts.showToast("You're Offline", color: Colors.red);
       }
       _prevStatus = status;
     });

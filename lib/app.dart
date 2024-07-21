@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app_test/feature/home/presentation/cubit/popular_cubit.dart';
 import 'package:news_app_test/feature/home/presentation/screens/home.dart';
+import 'package:news_app_test/feature/login/presentation/cubit/auth_cubit.dart';
 import 'package:news_app_test/utils/constants.dart';
 import 'package:news_app_test/utils/extensions.dart';
 import 'di.dart' as di;
@@ -19,6 +20,7 @@ class MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PopularNewsCubit>.value(value: di.sl()),
+        BlocProvider<AuthCubit>.value(value: di.sl()),
       ],
       child: HiveThemeWidget(
         builder: (context, box, widget, key) {
