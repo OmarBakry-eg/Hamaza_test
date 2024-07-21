@@ -8,7 +8,6 @@ import 'package:news_app_test/feature/login/domain/usecase/biometric_usecase.dar
 import 'package:news_app_test/feature/login/domain/usecase/delete_account_usecase.dart';
 import 'package:news_app_test/feature/login/domain/usecase/save_user_data.dart';
 import 'package:news_app_test/utils/constants.dart' as consts;
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthStateInternal> {
@@ -70,13 +69,13 @@ class AuthCubit extends Cubit<AuthStateInternal> {
 
   void _bioMetricLoginFunc() async {
     emit(AuthBiometricLoading());
-    final Either<Failure, UserCredential>? res = await biometricUsecase();
+    final Either<Failure, User>? res = await biometricUsecase();
     if (res != null) {
       emit(_loginEmitErrorOrData(res));
     }
   }
 
-  AuthStateInternal _loginEmitErrorOrData(Either<Failure, UserCredential> res) {
+  AuthStateInternal _loginEmitErrorOrData(Either<Failure, User> res) {
     return res.fold((failure) {
       return AuthErrorState(failure.message);
     }, (data) {
@@ -101,8 +100,8 @@ class AuthCubit extends Cubit<AuthStateInternal> {
   }
 
   //* Save User Data
-  void saveUserDataLogic(UserCredential user) async {
-    Either<Failure, bool>? res = await saveUserData(userCredential: user);
+  void _saveUserDataLogic(String user) async {
+    Either<Failure, bool>? res = await saveUserData(token: user);
     if (res != null) {
       res.isRight()
           ? consts.showToast("Data saved successfully")
@@ -110,13 +109,12 @@ class AuthCubit extends Cubit<AuthStateInternal> {
     }
   }
 
-  // void getAndSaveUseToken(User? user) async {
-  //   UserCredential? user = await user?.getIdToken();
-  //   Logger.logInfo("token $token");
-  //   if (token != null) {
-  //     return saveUserDataLogic(token);
-  //   }
-  //   consts.showToast("Cannot retrive the token from firebase");
-  //   return;
-  // }
+  void getAndSaveUseToken(User? user) async {
+    String? token = await user?.getIdToken(true);
+    if (token != null) {
+      return _saveUserDataLogic(token);
+    }
+    consts.showToast("Cannot retrive the token from firebase");
+    return;
+  }
 }

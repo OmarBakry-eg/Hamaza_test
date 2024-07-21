@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:news_app_test/core/dio/dio_client.dart';
 import 'package:news_app_test/core/hive/hive_services.dart';
@@ -94,4 +95,8 @@ Future<void> init() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  FirebaseUIAuth.configureProviders([
+    EmailAuthProvider(),
+  ]);
 }

@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '527569402059',
     projectId: 'rare-crew-test',
     storageBucket: 'rare-crew-test.appspot.com',
+    iosClientId: '527569402059-r1v68ophiammnb3idi03kte73mtqhmip.apps.googleusercontent.com',
     iosBundleId: 'com.example.newsAppTest',
   );
 

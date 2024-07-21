@@ -7,14 +7,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:527569402059:android:ce7a5f3d454109f3fbc34e",
+        "mobilesdk_app_id": "1:527569402059:android:5518bcccbae80875fbc34e",
         "android_client_info": {
-          "package_name": "com.example.news_app_test"
+          "package_name": "com.example.news_app_tes"
         }
       },
       "oauth_client": [
         {
-          "client_id": "527569402059-8537dc615mnooestr0r56q3029111kqb.apps.googleusercontent.com",
+          "client_id": "527569402059-bekrlrfl16nb8sk8893q173sgkk49jcp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -31,10 +31,46 @@
               "client_type": 3
             },
             {
-              "client_id": "527569402059-v351qschpd7s8s8g4jcuhlp85nq7m1rm.apps.googleusercontent.com",
+              "client_id": "527569402059-r1v68ophiammnb3idi03kte73mtqhmip.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.rareCrewTest"
+                "bundle_id": "com.example.newsAppTest"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527569402059:android:ce7a5f3d454109f3fbc34e",
+        "android_client_info": {
+          "package_name": "com.example.news_app_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527569402059-bekrlrfl16nb8sk8893q173sgkk49jcp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7pcQbq-8hs70Ehg6X0UVm7bYx4LhPSgk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527569402059-8537dc615mnooestr0r56q3029111kqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "527569402059-r1v68ophiammnb3idi03kte73mtqhmip.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.newsAppTest"
               }
             }
           ]
@@ -50,7 +86,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "527569402059-8537dc615mnooestr0r56q3029111kqb.apps.googleusercontent.com",
+          "client_id": "527569402059-bekrlrfl16nb8sk8893q173sgkk49jcp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -67,10 +103,10 @@
               "client_type": 3
             },
             {
-              "client_id": "527569402059-v351qschpd7s8s8g4jcuhlp85nq7m1rm.apps.googleusercontent.com",
+              "client_id": "527569402059-r1v68ophiammnb3idi03kte73mtqhmip.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.rareCrewTest"
+                "bundle_id": "com.example.newsAppTest"
               }
             }
           ]

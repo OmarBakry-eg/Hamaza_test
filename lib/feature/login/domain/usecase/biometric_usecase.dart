@@ -8,5 +8,5 @@ class BiometricUsecase {
 
   const BiometricUsecase({required this.authRepository});
 
-  Future<Either<Failure, UserCredential>?> call() async => await authRepository.biometricLogin();
+  Future<Either<Failure, User>?> call() async => await authRepository.biometricLogin();
 }

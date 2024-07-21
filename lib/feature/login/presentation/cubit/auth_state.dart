@@ -12,12 +12,12 @@ final class AuthInitial extends AuthStateInternal {}
 final class AuthBiometricLoading extends AuthStateInternal {}
 
 final class AuthBiometricSuccess extends AuthStateInternal {
-  final UserCredential? userCredential;
-  const AuthBiometricSuccess(this.userCredential);
+  final User? user;
+  const AuthBiometricSuccess(this.user);
 
   @override
   List<Object> get props => [
-        if (userCredential != null) {userCredential}
+        if (user != null) {user}
       ];
 }
 
