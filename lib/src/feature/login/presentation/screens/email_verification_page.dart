@@ -1,6 +1,6 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app_test/src/core/util/logger.dart';
+import 'package:news_app_test/src/core/loggers/logger.dart';
 import 'package:news_app_test/src/feature/login/presentation/screens/sign_in_page.dart';
 
 class EmailVerificationPage extends StatelessWidget {

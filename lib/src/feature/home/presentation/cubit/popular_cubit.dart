@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:news_app_test/src/core/errors/failures.dart';
 import 'package:news_app_test/src/core/network/network_info.dart';
-import 'package:news_app_test/src/core/util/logger.dart';
+import 'package:news_app_test/src/core/loggers/logger.dart';
 import 'package:news_app_test/src/feature/home/domain/usecase/get_popular_news/get_popular_news.dart';
 import 'package:news_app_test/src/feature/home/data/model/popular_model/popular_model.dart';
 import 'package:news_app_test/src/utils/constants.dart' as consts;

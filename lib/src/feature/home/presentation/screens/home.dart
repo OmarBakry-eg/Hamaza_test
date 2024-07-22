@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:news_app_test/src/core/util/logger.dart';
+import 'package:news_app_test/src/core/loggers/logger.dart';
 import 'package:news_app_test/src/feature/home/presentation/cubit/popular_cubit.dart';
 import 'package:news_app_test/src/feature/home/presentation/cubit/popular_state.dart';
 import 'package:news_app_test/src/feature/home/presentation/widgets/failure_widget.dart';

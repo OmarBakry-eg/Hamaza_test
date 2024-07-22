@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:news_app_test/src/core/dio/dio_exception.dart';
 import 'package:news_app_test/src/core/network/network_info.dart';
-import 'package:news_app_test/src/core/util/dio_logging_interceptor.dart';
-import 'package:news_app_test/src/core/util/logger.dart';
+import 'package:news_app_test/src/core/loggers/dio_logging_interceptor.dart';
+import 'package:news_app_test/src/core/loggers/logger.dart';
 import 'result.dart';
 
 class DioClient {
