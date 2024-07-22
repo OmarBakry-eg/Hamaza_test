@@ -100,7 +100,8 @@ class SignInPage extends StatelessWidget {
                     AuthFlowBuilder<EmailAuthController>(
                       listener: (old, state, _) {
                         if (state is SignedIn) {
-                          if (!state.user!.emailVerified) {
+                          if (state.user != null &&
+                              !state.user!.emailVerified) {
                             state.user?.sendEmailVerification();
                             context.read<AuthCubit>().initCubit();
                             Navigator.pushReplacement(
