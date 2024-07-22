@@ -40,3 +40,11 @@ final class AuthErrorState extends AuthStateInternal {
   @override
   List<Object> get props => [message];
 }
+
+final class FireAuthErrorState extends AuthStateInternal {
+  final Exception exception;
+  const FireAuthErrorState(this.exception);
+
+  @override
+  List<Object> get props => [exception];
+}

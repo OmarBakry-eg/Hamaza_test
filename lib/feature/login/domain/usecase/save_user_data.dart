@@ -8,7 +8,8 @@ class SaveUserData {
   const SaveUserData({required this.authRepository});
 
   Future<Either<Failure, bool>?> call({
-    required String token,
+    required String email,
+    required String password,
   }) async =>
-      await authRepository.saveUserData(token);
+      await authRepository.saveUserData(email, password);
 }

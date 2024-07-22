@@ -7,5 +7,5 @@ abstract class AuthRepository {
 
   Future<Either<Failure, bool>> deleteAccount();
 
-  Future<Either<Failure, bool>> saveUserData(String? token);
+  Future<Either<Failure, bool>> saveUserData(String? email, String? password);
 }

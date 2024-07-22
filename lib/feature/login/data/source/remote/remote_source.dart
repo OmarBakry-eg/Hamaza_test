@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:news_app_test/core/errors/exceptions.dart';
 
 abstract class AuthenticationClient {
-  Future<User?> loginWithToken({required String? token});
+  Future<User?> loginWithEmailAndPassword(
+      {required String email, required String password});
 
   Future<bool> deleteAccount();
 }
@@ -32,15 +33,11 @@ class AuthRemoteSource implements AuthenticationClient {
   }
 
   @override
-  Future<User?> loginWithToken({required String? token}) async {
+  Future<User?> loginWithEmailAndPassword(
+      {required String email, required String password}) async {
     try {
-      if (token == null) {
-        throw const EmptyCacheException(message: 'No token provided');
-      }
-
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCustomToken(token);
-
+      UserCredential userCredential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       throw ServerException(

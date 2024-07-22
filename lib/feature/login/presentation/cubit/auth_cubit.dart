@@ -20,8 +20,25 @@ class AuthCubit extends Cubit<AuthStateInternal> {
       required this.saveUserData})
       : super(AuthInitial());
 
+  //* Init logic
+  void initCubit() {
+    emit(AuthInitial());
+  }
+
+  //* Handle firebase UI errors
+  void handleFireUIExp(Exception exception) {
+    emit(FireAuthErrorState(exception));
+  }
+
   //* Biometric Authentication
   final LocalAuthentication _auth = LocalAuthentication();
+
+  String? email, password;
+
+  void onSubmit(String email, String password) {
+    this.email = email;
+    this.password = password;
+  }
 
   Future<(bool, String)> get _checkBioMetric async {
     try {
@@ -100,21 +117,18 @@ class AuthCubit extends Cubit<AuthStateInternal> {
   }
 
   //* Save User Data
-  void _saveUserDataLogic(String user) async {
-    Either<Failure, bool>? res = await saveUserData(token: user);
-    if (res != null) {
-      res.isRight()
-          ? consts.showToast("Data saved successfully")
-          : consts.showToast("Error while saving user data");
+  void saveUserDataLogicInLocal() async {
+    initCubit();
+    if (email != null && password != null) {
+      Either<Failure, bool>? res =
+          await saveUserData(email: email!, password: password!);
+      if (res != null) {
+        res.isRight()
+            ? consts.showToast("Data saved successfully")
+            : consts.showToast("Error while saving user data");
+      }
+    } else {
+      consts.showToast("Email or password cannot be null");
     }
-  }
-
-  void getAndSaveUseToken(User? user) async {
-    String? token = await user?.getIdToken(true);
-    if (token != null) {
-      return _saveUserDataLogic(token);
-    }
-    consts.showToast("Cannot retrive the token from firebase");
-    return;
   }
 }

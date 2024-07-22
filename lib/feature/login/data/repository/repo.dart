@@ -24,13 +24,14 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  Future<Either<Failure, User>?> _loginWithToken(
-      {required String? token}) async {
+  Future<Either<Failure, User>?> _loginWithEmailAndPassword(
+      {required String email, required String password}) async {
     try {
-      User? userdata =
-          await _authRemoteSource.loginWithToken(token: token);
+      User? userdata = await _authRemoteSource.loginWithEmailAndPassword(
+          email: email, password: password);
       if (userdata != null) {
-        _authLocalSource.saveUserData(token!);
+        _authLocalSource.saveUserEmail(email);
+        _authLocalSource.saveUserPassword(password);
         return Right(userdata);
       }
       return const Left(
@@ -43,9 +44,10 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, User>?> biometricLogin() async {
     try {
-      String? token = await _authLocalSource.readUserData;
-      if (token != null && token.isNotEmpty) {
-        return _loginWithToken(token: token);
+      String? email = await _authLocalSource.readUserEmail;
+      String? password = await _authLocalSource.readUserPassword;
+      if (email != null && password != null) {
+        return _loginWithEmailAndPassword(email: email, password: password);
       }
       return const Left(
           EmptyCacheFailure(message: 'No user found. Try normal login first'));
@@ -55,13 +57,18 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> saveUserData(String? token) async {
+  Future<Either<Failure, bool>> saveUserData(
+      String? email, String? password) async {
     try {
-      if (token == null || token.isEmpty) {
-        return const Left(
-            ServerFailure(message: "No token provided from firebase"));
+      if (email == null ||
+          email.isEmpty ||
+          password == null ||
+          password.isEmpty) {
+        return const Left(ServerFailure(
+            message: "Data is missing. Please provide email and password"));
       }
-      await _authLocalSource.saveUserData(token);
+      await _authLocalSource.saveUserEmail(email);
+      await _authLocalSource.saveUserPassword(password);
       return const Right(true);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));

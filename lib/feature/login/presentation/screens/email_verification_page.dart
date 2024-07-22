@@ -1,7 +1,6 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app_test/core/util/logger.dart';
-import 'package:news_app_test/feature/login/presentation/screens/sign_in_page.dart';
 
 class EmailVerificationPage extends StatelessWidget {
   const EmailVerificationPage({super.key});
@@ -12,13 +11,7 @@ class EmailVerificationPage extends StatelessWidget {
       actions: [
         EmailVerifiedAction(() {
           Logger.logInfo("EmailVerifiedAction");
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (c) => const SignInPage(
-                        headerTitle: "Now please sign in to confirm your data",
-                      )));
+          Navigator.pop(context);
         }),
         AuthCancelledAction((context) {
           Logger.logInfo("AuthCancelledAction");
