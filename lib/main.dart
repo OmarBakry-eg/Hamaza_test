@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:news_app_test/app.dart';
-import 'package:news_app_test/di.dart' as di;
+import 'package:news_app_test/src/app.dart';
+import 'package:news_app_test/src/di.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
