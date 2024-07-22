@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:news_app_test/src/core/errors/exceptions.dart';
 import 'package:news_app_test/src/core/errors/failures.dart';
-import 'package:news_app_test/src/core/util/logger.dart';
 import 'package:news_app_test/src/feature/home/data/datasource/local/news_local_source.dart';
 import 'package:news_app_test/src/feature/home/data/datasource/remote/news_remote_data_source.dart';
 import 'package:news_app_test/src/feature/home/data/model/popular_model/popular_model.dart';
@@ -23,10 +22,8 @@ class PopularNewsRepositoryImpl implements NewsRepository {
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } on OfflineException catch (e) {
-      Logger.logError("resssss");
       List<dynamic>? results =
           await newsLocalSource.getItem();
-      Logger.logError("resssss: $results");
       if (results != null && results.isNotEmpty) {
         List<PopularNewsResult> popRes = [];
         for (var element in results) {

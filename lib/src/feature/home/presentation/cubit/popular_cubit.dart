@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,20 +30,24 @@ class PopularNewsCubit extends Cubit<PopularNewsState> {
     } else {
       emit(OfflineStatus(articleList: _articleList));
     }
-    listenToNetworkConnection();
+    _listenToNetworkConnection();
   }
 
   InternetStatus? _prevStatus;
-  void listenToNetworkConnection() {
+  void _listenToNetworkConnection() {
     _networkInfo.isStreamConnected.listen((InternetStatus status) {
       if (status == InternetStatus.connected && _prevStatus != null) {
         emit(OnlineStatus(articleList: _articleList));
-        consts.showToast("Back Online", color: Colors.green);
+        if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+          consts.showToast("Back Online", color: Colors.green);
+        }
       }
 
       if (status == InternetStatus.disconnected) {
         emit(OfflineStatus(articleList: _articleList));
-        consts.showToast("You're Offline", color: Colors.red);
+        if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+          consts.showToast("You're Offline", color: Colors.red);
+        }
       }
       _prevStatus = status;
     });

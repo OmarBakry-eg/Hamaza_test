@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +49,10 @@ class AuthCubit extends Cubit<AuthStateInternal> {
         return (false, "Cannot check biometrics, this is a platform exception");
       }
     } catch (e) {
-      consts.showToast("Cannot check biometrics, this is a platform exception");
+      if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+        consts
+            .showToast("Cannot check biometrics, this is a platform exception");
+      }
       return (false, "Cannot check biometrics, this is a platform exception");
     }
     try {
@@ -56,7 +61,9 @@ class AuthCubit extends Cubit<AuthStateInternal> {
         return (false, "Your device is not supported biometrics");
       }
     } catch (e) {
-      consts.showToast("Your device is not supported biometrics");
+      if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+        consts.showToast("Your device is not supported biometrics");
+      }
       return (false, "Your device is not supported biometrics");
     }
     return (true, '');
@@ -65,7 +72,9 @@ class AuthCubit extends Cubit<AuthStateInternal> {
   void bioMerticAuth() async {
     final (bool, String) checking = await _checkBioMetric;
     if (!checking.$1) {
-      consts.showToast(checking.$2);
+      if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+        consts.showToast(checking.$2);
+      }
       return;
     }
     try {
@@ -74,12 +83,16 @@ class AuthCubit extends Cubit<AuthStateInternal> {
               'Please authenticate to valiadte your data to be able to access the application',
           options: const AuthenticationOptions(stickyAuth: true));
       if (!didAuthenticate) {
-        consts.showToast('Error while authenticating');
+        if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+          consts.showToast('Error while authenticating');
+        }
         return;
       }
       _bioMetricLoginFunc();
     } catch (e) {
-      consts.showToast(e.toString());
+      if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+        consts.showToast(e.toString());
+      }
       return;
     }
   }
@@ -117,18 +130,24 @@ class AuthCubit extends Cubit<AuthStateInternal> {
   }
 
   //* Save User Data
-  void saveUserDataLogicInLocal() async {
+  Future<bool> saveUserDataLogicInLocal() async {
     initCubit();
     if (email != null && password != null) {
       Either<Failure, bool>? res =
           await saveUserData(email: email!, password: password!);
       if (res != null) {
-        res.isRight()
-            ? consts.showToast("Data saved successfully")
-            : consts.showToast("Error while saving user data");
+        if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+          res.isRight()
+              ? consts.showToast("Data saved successfully")
+              : consts.showToast("Error while saving user data");
+        }
+        return res.isRight();
       }
     } else {
-      consts.showToast("Email or password cannot be null");
+      if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+        consts.showToast("Email or password cannot be null");
+      }
     }
+    return false;
   }
 }
