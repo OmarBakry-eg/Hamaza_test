@@ -28,7 +28,9 @@ class PopularNewsCubit extends Cubit<PopularNewsState> {
     if (await _networkInfo.isConnected) {
       _prevStatus = null;
     } else {
-      emit(OfflineStatus(articleList: _articleList));
+      if (_articleList.isNotEmpty) {
+        emit(OfflineStatus(articleList: _articleList));
+      }
     }
     _listenToNetworkConnection();
   }
@@ -37,14 +39,18 @@ class PopularNewsCubit extends Cubit<PopularNewsState> {
   void _listenToNetworkConnection() {
     _networkInfo.isStreamConnected.listen((InternetStatus status) {
       if (status == InternetStatus.connected && _prevStatus != null) {
-        emit(OnlineStatus(articleList: _articleList));
+        if (_articleList.isNotEmpty) {
+          emit(OnlineStatus(articleList: _articleList));
+        }
         if (!Platform.environment.containsKey('FLUTTER_TEST')) {
           consts.showToast("Back Online", color: Colors.green);
         }
       }
 
       if (status == InternetStatus.disconnected) {
-        emit(OfflineStatus(articleList: _articleList));
+        if (_articleList.isNotEmpty) {
+          emit(OfflineStatus(articleList: _articleList));
+        }
         if (!Platform.environment.containsKey('FLUTTER_TEST')) {
           consts.showToast("You're Offline", color: Colors.red);
         }

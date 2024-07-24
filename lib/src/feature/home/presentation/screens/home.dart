@@ -43,8 +43,12 @@ class HomePageState extends State<HomePage> {
                         errorMessage: state.errorMessage,
                       )
                     : state is LoadedPopularNewsState ||
-                            state is OnlineStatus ||
-                            state is OfflineStatus
+                            (state is OnlineStatus &&
+                                state.articleList != null &&
+                                state.articleList!.isNotEmpty) ||
+                            (state is OfflineStatus &&
+                                state.articleList != null &&
+                                state.articleList!.isNotEmpty)
                         ? Padding(
                             padding: const EdgeInsets.all(22),
                             child: RefreshIndicator.adaptive(
